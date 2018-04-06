@@ -40,7 +40,7 @@ function DoublyLinkedList () {
     return forwardStr.slice(1)
   }
 
-  // 生成反响遍历字符串
+  // 生成反向遍历字符串
   DoublyLinkedList.prototype.reverseString = function () {
     let current = this.tail
     let reverseStr = ''
@@ -100,6 +100,79 @@ function DoublyLinkedList () {
 
     return true
   }
+
+  // 移除固定位置的节点
+  DoublyLinkedList.prototype.removeAt = function (position) {
+    if (position < 0 || position >= this.length) return null
+
+    let current = this.head
+    // 在头部移除
+    if (position === 0) {
+      if (this.length === 1) {
+        this.head = null
+        this.tail = null
+      } else {
+        this.head = current.next
+        this.head.prev = null
+      }
+    } else if (position === this.length - 1) { // 尾部移除
+      current = this.tail
+      this.tail = current.prev
+      this.tail.next = null
+    } else {
+      let index = 0
+      let previous = null
+      while (index++ < position) {
+        previous = current
+        current = current.next
+      }
+      previous.next = current.next
+      current.next.prev = previous
+    }
+    // 链表长度减1并返回移除的元素
+    this.length--
+    return current.element
+  }
+
+  // 根据元素值获取在链表中的位置
+  DoublyLinkedList.prototype.indexOf = function (element) {
+    let current = this.head
+    let index = 0
+    // 循环遍历查找元素位置
+    while (current) {
+      if (element === current.element) {
+        return index
+      }
+      index++
+      current = current.next
+    }
+    // 没有找到返回-1表示元素不存在
+    return -1
+  }
+
+  // 根据元素值删除节点
+  DoublyLinkedList.prototype.remove = function (element) {
+    let index = this.indexOf(element)
+    return this.removeAt(index)
+  }
+
+  // 判断链表是否为空
+  DoublyLinkedList.prototype.isEmpty = function () {
+    return this.length === 0
+  }
+  // 获取链表的长度
+  DoublyLinkedList.prototype.size = function () {
+    return this.length
+  }
+
+  // 获取链表的头部节点
+  DoublyLinkedList.prototype.getHead = function () {
+    return this.head
+  }
+  // 获取链表的尾部节点
+  DoublyLinkedList.prototype.getTail = function () {
+    return this.tail
+  }
 }
 
 let list = new DoublyLinkedList()
@@ -108,5 +181,7 @@ list.append('cba')
 list.append('nba')
 list.append('mba')
 list.insert(2, '100')
+console.log(list.removeAt(3))
+console.log(list.indexOf('cba'))
 console.log(list)
 
