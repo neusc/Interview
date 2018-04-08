@@ -44,7 +44,9 @@ function HashTable () {
       this.count++
       // 数组扩容判断，如果装填因子大于2/3则扩容为原先容量的2倍
       if (this.count > this.limit * 0.75) {
-        this.resize(this.limit * 2)
+        // 容量为质数便于哈希表的均衡分配
+        let primeNum = this.getPrime(this.limit * 2)
+        this.resize(primeNum)
       }
     }
   }
@@ -77,7 +79,8 @@ function HashTable () {
         this.count--
         // 如果删除数据后数据量小于容量的1/4，则缩减容量到原先的一半
         if (this.limit > 8 && this.count < this.limit * 0.25) {
-          this.resize(Math.floor(this.limit / 2))
+          let primeNum = this.getPrime(Math.floor(this.limit / 2))
+          this.resize(primeNum)
         }
       }
       return tuple[1]
@@ -112,6 +115,25 @@ function HashTable () {
         this.put(tuple[0], tuple[i])
       }
     }).bind(this)
+  }
+  // 判断一个数是否为质数
+  HashTable.prototype.isPrime = function (num) {
+    let temp = parseInt(Math.sqrt(num))
+
+    for (let i = 2; i < temp; i++) {
+      if (num % i === 0) {
+        return false
+      }
+    }
+    return true
+  }
+
+  // 获取提供数最近的质数
+  HashTable.prototype.getPrime = function (num) {
+    while (!this.isPrime(num)) {
+      num++
+    }
+    return num
   }
 }
 
