@@ -112,9 +112,9 @@ function HashTable () {
       // 对原先哈希表中的数据重新哈希生成新的数组
       for (let i = 0; i < bucket.length; i++) {
         let tuple = bucket[i]
-        this.put(tuple[0], tuple[i])
+        this.put(tuple[0], tuple[1])
       }
-    }).bind(this)
+    }.bind(this))
   }
   // 判断一个数是否为质数
   HashTable.prototype.isPrime = function (num) {
