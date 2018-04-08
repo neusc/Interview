@@ -42,6 +42,10 @@ function HashTable () {
     if (!override) {
       bucket.push([key, value])
       this.count++
+      // 数组扩容判断，如果装填因子大于2/3则扩容为原先容量的2倍
+      if (this.count > this.limit * 0.75) {
+        this.resize(this.limit * 2)
+      }
     }
   }
   // 根据Key获取数据
@@ -71,8 +75,12 @@ function HashTable () {
       if (tuple[0] === key) {
         bucket.splice(i, 1)
         this.count--
-        return tuple[1]
+        // 如果删除数据后数据量小于容量的1/4，则缩减容量到原先的一半
+        if (this.limit > 8 && this.count < this.limit * 0.25) {
+          this.resize(Math.floor(this.limit / 2))
+        }
       }
+      return tuple[1]
     }
     // 没有找到对应的数据，返回null
     return null
@@ -86,6 +94,24 @@ function HashTable () {
   // 哈希表中元素的个数
   HashTable.prototype.size = function () {
     return this.count
+  }
+
+  HashTable.prototype.resize = function (newLimit) {
+    // 保存原先的数组
+    let oldStorage = this.storage
+    // 重置哈希表属性
+    this.count = 0
+    this.limit = newLimit
+    this.storage = []
+
+    oldStorage.forEach(function (bucket) {
+      if (bucket === null) return
+      // 对原先哈希表中的数据重新哈希生成新的数组
+      for (let i = 0; i < bucket.length; i++) {
+        let tuple = bucket[i]
+        this.put(tuple[0], tuple[i])
+      }
+    }).bind(this)
   }
 }
 
