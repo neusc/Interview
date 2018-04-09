@@ -101,6 +101,40 @@ function BinarySearchTree () {
     }
     return node.key
   }
+
+  // 在二叉搜索树中递归查找指定的值
+  // 注意return的使用，因为函数具有返回值
+  BinarySearchTree.prototype.search = function (key) {
+    return this.searchNode(this.root, key)
+  }
+
+  BinarySearchTree.prototype.searchNode = function (node, key) {
+    if (node === null) {
+      return false
+    }
+    if (key < node.key) { // 递归查找
+      return this.searchNode(node.left, key)
+    } else if (key > node.key) {
+      return this.searchNode(node.right, key)
+    } else {
+      return true
+    }
+  }
+
+  // 在二叉搜索树中查找结点的非递归方法
+  BinarySearchTree.prototype.search2 = function (key) {
+    let node = this.root
+    while (node !== null) {
+      if (key < node.key) {
+        node = node.left
+      } else if (key > node.key) {
+        node = node.right
+      } else {
+        return true
+      }
+    }
+    return false
+  }
 }
 
 let bst = new BinarySearchTree()
@@ -121,3 +155,5 @@ bst.postOrderTraversal(function (key) {
 console.log(resultStr)
 console.log(bst.min())
 console.log(bst.max())
+console.log(bst.search(5))
+console.log(bst.search2(28))
