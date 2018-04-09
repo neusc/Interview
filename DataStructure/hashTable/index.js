@@ -44,7 +44,7 @@ function HashTable () {
       this.count++
       // 数组扩容判断，如果装填因子大于2/3则扩容为原先容量的2倍
       if (this.count > this.limit * 0.75) {
-        // 容量为质数便于哈希表的均衡分配
+        // 容量为质数便于哈希表的分布均衡
         let primeNum = this.getPrime(this.limit * 2)
         this.resize(primeNum)
       }
@@ -99,6 +99,7 @@ function HashTable () {
     return this.count
   }
 
+  // 扩容函数
   HashTable.prototype.resize = function (newLimit) {
     // 保存原先的数组
     let oldStorage = this.storage
