@@ -135,21 +135,110 @@ function BinarySearchTree () {
     }
     return false
   }
+
+  BinarySearchTree.prototype.remove = function (key) {
+    let current = this.root
+    let parent = this.root
+    let isLeftChild = true
+
+    // 查找需要删除的结点
+    while (current.key !== key) {
+      parent = current
+      if (key < current.key) {
+        isLeftChild = true
+        current = current.left
+      } else {
+        isLeftChild = false
+        current = current.right
+      }
+      if (current === null) return false // 没有找到需要删除的结点
+    }
+    // 删除的结点是叶结点
+    if (current.left === null && current.right === null) {
+      if (this.root === current) {
+        this.root = null
+      } else if (isLeftChild) { // 将父节点指向删除节点的引用置为null
+        parent.left = null
+      } else {
+        parent.right = null
+      }
+      // 删除的结点有一个子结点
+    } else if (current.right === null) {
+      if (this.root === current) {
+        this.root = current.left
+      } else if (isLeftChild) {
+        parent.left = current.left
+      } else {
+        parent.right = current.left
+      }
+    } else if (current.left === null) {
+      if (this.root === current) {
+        this.root = current.right
+      } else if (isLeftChild) {
+        parent.left = current.right
+      } else {
+        parent.right = current.right
+      }
+      // 删除的结点有两个子结点
+    } else {
+      // 计算删除结点的后继结点
+      let successor = this.getSuccessor(current)
+
+      if (current === this.root) {
+        this.root = successor
+      } else if (isLeftChild) {
+        parent.left = successor
+      } else {
+        parent.right = successor
+      }
+      // 将删除节点的左子树赋值给后继结点
+      successor.left = current.left
+    }
+    return true
+  }
+  // 寻找删除结点的后继结点
+  BinarySearchTree.prototype.getSuccessor = function (delNode) {
+    let successorParent = delNode
+    let successor = delNode
+    let current = delNode.right // 后继结点应该从右子树查找
+
+    // 寻找结点
+    while (current !== null) {
+      successorParent = successor
+      successor = current
+      current = current.left
+    }
+
+    if (successor !== delNode.right) {
+      successorParent.left = successor.right
+      successor.right = delNode.right
+    }
+    // 返回查找到的后继结点
+    return successor
+  }
 }
 
 let bst = new BinarySearchTree()
 
 bst.insert(11)
-bst.insert(5)
-bst.insert(6)
-bst.insert(4)
+bst.insert(7)
 bst.insert(15)
-bst.insert(18)
+bst.insert(5)
+bst.insert(9)
 bst.insert(13)
+bst.insert(20)
+bst.insert(3)
+bst.insert(8)
+bst.insert(10)
+bst.insert(12)
+bst.insert(14)
+bst.insert(18)
+bst.insert(25)
+bst.insert(19)
 
 console.log(bst)
 let resultStr = ''
-bst.postOrderTraversal(function (key) {
+bst.preOrderTraversal(function (key) {
   resultStr += key + ' '
 })
 console.log(resultStr)
@@ -157,3 +246,5 @@ console.log(bst.min())
 console.log(bst.max())
 console.log(bst.search(5))
 console.log(bst.search2(28))
+console.log(bst.remove(15))
+console.log(bst)
