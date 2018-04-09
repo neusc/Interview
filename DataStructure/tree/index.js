@@ -35,6 +35,72 @@ function BinarySearchTree () {
       }
     }
   }
+
+  // 先序遍历
+  BinarySearchTree.prototype.preOrderTraversal = function (handler) {
+    this.preOrderTraversalNode(this.root, handler)
+  }
+
+  BinarySearchTree.prototype.preOrderTraversalNode = function (node, handler) {
+    if (node !== null) {
+      // 首先访问当前结点
+      handler(node.key)
+      // 递归遍历结点的左子树
+      this.preOrderTraversalNode(node.left, handler)
+      // 递归遍历结点的右子树
+      this.preOrderTraversalNode(node.right, handler)
+    }
+  }
+
+  // 中序遍历
+  BinarySearchTree.prototype.inOrderTraversal = function (handler) {
+    this.inOrderTraversalNode(this.root, handler)
+  }
+
+  BinarySearchTree.prototype.inOrderTraversalNode = function (node, handler) {
+    if (node !== null) {
+      // 首先递归遍历结点的左子树
+      this.inOrderTraversalNode(node.left, handler)
+      // 访问当前结点
+      handler(node.key)
+      // 最后递归遍历结点的右子树
+      this.inOrderTraversalNode(node.right, handler)
+    }
+  }
+
+  // 后序遍历
+  BinarySearchTree.prototype.postOrderTraversal = function (handler) {
+    this.postOrderTraversalNode(this.root, handler)
+  }
+
+  BinarySearchTree.prototype.postOrderTraversalNode = function (node, handler) {
+    if (node !== null) {
+      // 首先递归遍历结点的左子树
+      this.postOrderTraversalNode(node.left, handler)
+      // 然后递归遍历结点的右子树
+      this.postOrderTraversalNode(node.right, handler)
+      // 最后访问当前结点
+      handler(node.key)
+    }
+  }
+
+  // 获取二叉搜索树中的结点最小值
+  BinarySearchTree.prototype.min = function () {
+    let node = this.root
+    if (node.left !== null) {
+      node = node.left
+    }
+    return node.key
+  }
+
+  // 获取二叉搜索树中的结点最大值
+  BinarySearchTree.prototype.max = function () {
+    let node = this.root
+    if (node.right !== null) {
+      node = node.right
+    }
+    return node.key
+  }
 }
 
 let bst = new BinarySearchTree()
@@ -48,3 +114,10 @@ bst.insert(18)
 bst.insert(13)
 
 console.log(bst)
+let resultStr = ''
+bst.postOrderTraversal(function (key) {
+  resultStr += key + ' '
+})
+console.log(resultStr)
+console.log(bst.min())
+console.log(bst.max())
