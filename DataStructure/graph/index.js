@@ -28,6 +28,76 @@ function Graph () {
     }
     return resultStr
   }
+
+  // 初始化颜色，表示结点当前的三种状态
+  // 白色表示未被访问过，灰色表示被访问过但未被完全探索，黑色表示被完全探索过
+  Graph.prototype.initializeColor = function () {
+    let colors = []
+    for (let i = 0; i < this.vertexes.length; i++) {
+      colors[this.vertexes[i]] = 'white'
+    }
+    return colors
+  }
+
+  // 图的广度优先搜索算法，基于队列实现，即先入队列的结点先访问
+  Graph.prototype.bfs = function (v, handler) {
+    // 初始化颜色
+    let color = this.initializeColor()
+    // 创建队列
+    let queue = new Queue()
+    // 结点进入队列
+    queue.enqueue(v)
+
+    while (!queue.isEmpty()) {
+      // 从队列提取一个结点
+      let qv = queue.dequeue()
+      // 获取结点相邻的所有结点
+      let qAdj = this.adjList.get(qv)
+      // 将qv结点置为灰色
+      color[qv] = 'gray'
+
+      // 依次访问qv的相邻结点并更改它们的颜色，放入队列
+      for (let i = 0; i < qAdj.length; i++) {
+        let a = qAdj[i]
+        if (color[a] === 'white') {
+          color[a] = 'gray'
+          queue.enqueue(a)
+        }
+      }
+      // 由于qv已经被完全探索过，所以将颜色置为灰色
+      color[qv] = 'black'
+      if (handler) {
+        handler(qv)
+      }
+    }
+  }
+
+  // 图的深度优先遍历算法，基于递归实现(递归也是基于函数栈实现)
+  Graph.prototype.dfs = function (handler) {
+    let color = this.initializeColor()
+    for (let i = 0; i < this.vertexes.length; i++) {
+      if (color[this.vertexes[i]] === 'white') {
+        this.dfsVisit(this.vertexes[i], color, handler)
+      }
+    }
+  }
+  // dfs递归调用算法
+  Graph.prototype.dfsVisit = function (u, color, handler) {
+    color[u] = 'gray' // 当前结点置灰
+    if (handler) { // 处理u结点
+      handler(u)
+    }
+
+    // 递归访问该结点相邻的所有结点
+    let uAdj = this.adjList.get(u)
+    for (let i = 0; i < uAdj.length; i++) {
+      let w = uAdj[i]
+      if (color[w] === 'white') {
+        this.dfsVisit(w, color, handler)
+      }
+    }
+    color[u] = 'black' // 结点置灰
+  }
 }
 
 let graph = new Graph()
@@ -50,3 +120,9 @@ graph.addEdge('E', 'I')
 
 console.log(graph)
 console.log(graph.toString())
+
+let resultStr = ''
+graph.dfs(function (v) {
+  resultStr += v + ' '
+})
+console.log(resultStr)
