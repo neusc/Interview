@@ -102,7 +102,7 @@ function BinarySearchTree () {
     return node.key
   }
 
-  // 在二叉搜索树中递归查找指定的值
+  // 在二叉搜索树中递归查找指定的值并返回查找到的结点
   // 注意return的使用，因为函数具有返回值
   BinarySearchTree.prototype.search = function (key) {
     return this.searchNode(this.root, key)
@@ -110,14 +110,14 @@ function BinarySearchTree () {
 
   BinarySearchTree.prototype.searchNode = function (node, key) {
     if (node === null) {
-      return false
+      return null
     }
     if (key < node.key) { // 递归查找
       return this.searchNode(node.left, key)
     } else if (key > node.key) {
       return this.searchNode(node.right, key)
     } else {
-      return true
+      return node
     }
   }
 
@@ -130,10 +130,10 @@ function BinarySearchTree () {
       } else if (key > node.key) {
         node = node.right
       } else {
-        return true
+        return node
       }
     }
-    return false
+    return null
   }
 
   BinarySearchTree.prototype.remove = function (key) {
@@ -219,6 +219,21 @@ function BinarySearchTree () {
     // 返回查找到的后继结点
     return successor
   }
+
+  // 寻找删除节点的前驱结点
+  BinarySearchTree.prototype.getPredecessor = function (delNode) {
+    let predecessorParent = delNode
+    let predecessor = delNode
+    let current = delNode.left // 前驱结点从删除节点的左子树中查找
+
+    while (current !== null) {
+      predecessorParent = predecessor
+      predecessor = current
+      current = current.right // 前驱结点是左子树中Key值最大的结点
+    }
+
+    return predecessor
+  }
 }
 
 let bst = new BinarySearchTree()
@@ -247,7 +262,5 @@ bst.preOrderTraversal(function (key) {
 console.log(resultStr)
 console.log(bst.min())
 console.log(bst.max())
-console.log(bst.search(5))
-console.log(bst.search2(28))
-console.log(bst.remove(15))
-console.log(bst)
+console.log(bst.search2(25))
+console.log(bst.getPredecessor(bst.search(15)))
