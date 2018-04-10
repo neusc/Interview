@@ -197,12 +197,15 @@ function BinarySearchTree () {
     return true
   }
   // 寻找删除结点的后继结点
+  // 后继结点即大于当前结点Key的所有结点中key值最小的结点
+  // 所以应该在当前结点的右子树中查找最小key值结点
   BinarySearchTree.prototype.getSuccessor = function (delNode) {
     let successorParent = delNode
     let successor = delNode
     let current = delNode.right // 后继结点应该从右子树查找
 
     // 寻找结点
+    // key值最小应该不断在左子树中查找
     while (current !== null) {
       successorParent = successor
       successor = current
