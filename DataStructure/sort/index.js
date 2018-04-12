@@ -144,22 +144,22 @@ function ArrayList () {
   ArrayList.prototype.quickSortRec = function (left, right) {
     if (left >= right) return  // 递归结束条件
 
-    let pivot = this.median(left, right) // 寻找基准值(pivot)
+    let pivot = this.array[left] // 寻找基准值(pivot)
 
     let i = left
-    let j = right - 1
-    while (true) {
-      while (this.array[++i] < pivot) {} // 从前向后搜索，找到第一个大于基准值的元素
-      while (this.array[--j] > pivot) {} // 从后向前搜索，找到第一个小于基准值的元素
+    let j = right
+    // 遍历寻找到同一个位置则结束当前循环
+    while (i !== j) {
+      // 应为设定第一个值为基准点，所以必须先从后向前遍历先执行，否则找到的基准值是错误的
+      while (this.array[j] >= pivot && i < j) j--  // 从后向前搜索，找到第一个小于基准值的元素
+      while (this.array[i] <= pivot && i < j) i++  // 从前向后搜索，找到第一个大于基准值的元素
       if (i < j) {
         this.swap(i, j) // 交换i,j的位置
-      } else {
-        break // 遍历寻找到同一个位置则结束当前循环
       }
     }
     // 当前i位置即为基准值的位置
     // 将枢纽值放到正确的位置
-    this.swap(i, right - 1)
+    this.swap(left, i)
     // 递归调用
     this.quickSortRec(left, i - 1)
     this.quickSortRec(i + 1, right)
