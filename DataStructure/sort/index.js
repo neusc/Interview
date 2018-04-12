@@ -118,6 +118,52 @@ function ArrayList () {
     // 递归遍历左右两个数组，最终返回排完序合并和的数组
     return this.quickSort(left).concat([pivot], this.quickSort(right))
   }
+
+  // 取头中尾的中位数作为枢纽值pivot
+  ArrayList.prototype.median = function (left, right) {
+    let center = Math.floor((left + right) / 2) // 计算中间的位置
+
+    // left、center、right三个位置的数据进行比较和交换
+    if (this.array[left] > this.array[center]) {
+      this.swap(left, center)
+    }
+    if (this.array[center] > this.array[right]) {
+      this.swap(center, right)
+    }
+    if (this.array[left] > this.array[right]) {
+      this.swap(left, right)
+    }
+
+    this.swap(center, right - 1) // 将center交换到right-1的位置
+    return this.array[right - 1] // 返回pivot
+  }
+
+  ArrayList.prototype.quickSort2 = function () {
+    this.quickSortRec(0, this.array.length - 1)
+  }
+  ArrayList.prototype.quickSortRec = function (left, right) {
+    if (left >= right) return  // 递归结束条件
+
+    let pivot = this.median(left, right) // 寻找基准值(pivot)
+
+    let i = left
+    let j = right - 1
+    while (true) {
+      while (this.array[++i] < pivot) {} // 从前向后搜索，找到第一个大于基准值的元素
+      while (this.array[--j] > pivot) {} // 从后向前搜索，找到第一个小于基准值的元素
+      if (i < j) {
+        this.swap(i, j) // 交换i,j的位置
+      } else {
+        break // 遍历寻找到同一个位置则结束当前循环
+      }
+    }
+    // 当前i位置即为基准值的位置
+    // 将枢纽值放到正确的位置
+    this.swap(i, right - 1)
+    // 递归调用
+    this.quickSortRec(left, i - 1)
+    this.quickSortRec(i + 1, right)
+  }
 }
 
 let list = new ArrayList()
@@ -130,5 +176,5 @@ list.insert(11)
 list.insert(10)
 list.insert(5)
 
-console.log(list)
-console.log(list.quickSort(list.array))
+list.quickSort2()
+console.log(list.array)
