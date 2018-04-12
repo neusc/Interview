@@ -46,6 +46,28 @@ function ArrayList () {
     this.array[m] = this.array[n]
     this.array[n] = temp
   }
+
+  // 插入排序
+  // 比较次数最多为1+2+...+(N-1) = N*(N-1)/2
+  // 每趟排序平均只需比较一半，所以比较次数为N*(N-1)/4，所以效率比选择排序高
+  // 对于大部分已经有序的数组，效率高很多，因为while循环条件一直为假
+  ArrayList.prototype.insertionSort = function () {
+    let length = this.array.length
+
+    // 默认0认为是有序的，所以下标从1开始
+    for (let i = 1; i < length; i++) {
+      let j = i
+      let temp = this.array[i]
+      // 从已排序的局部数组从后往前遍历，大于temp就后移一位，知道找到已排序元素小于等于新元素的位置
+      // 插入新元素既可
+      while (j > 0 && this.array[j - 1] > temp) {
+        this.array[j] = this.array[j - 1]
+        j--
+      }
+      // 将新元素插入找到的位置
+      this.array[j] = temp
+    }
+  }
 }
 
 let list = new ArrayList()
@@ -59,5 +81,5 @@ list.insert(10)
 list.insert(5)
 
 console.log(list)
-list.selectionSort()
+list.insertionSort()
 console.log(list)
