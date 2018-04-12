@@ -68,6 +68,36 @@ function ArrayList () {
       this.array[j] = temp
     }
   }
+
+  /**
+   * 高级排序
+   * 希尔排序和快速排序
+   */
+
+  // 希尔排序基于插入排序实现
+  // 增量的不同会导致效率的不同
+  // 大多数情况下效率高于简单排序，在合适的增量下也可能好于快速排序
+  ArrayList.prototype.shellSort = function () {
+    let length = this.array.length
+
+    let gap = Math.floor(length / 2)
+
+    while (gap > 0) {
+      // 以gap为间隔实现插入排序
+      for (let i = gap; i < length; i++) {
+        let j = i
+        let temp = this.array[i]
+
+        while (j > 0 && this.array[j - gap] > temp) {
+          this.array[j] = this.array[j - gap]
+          j -= gap
+        }
+        this.array[j] = temp
+      }
+      // 重新计算间隔，每次减半
+      gap = Math.floor(gap / 2)
+    }
+  }
 }
 
 let list = new ArrayList()
@@ -81,5 +111,5 @@ list.insert(10)
 list.insert(5)
 
 console.log(list)
-list.insertionSort()
+list.shellSort()
 console.log(list)
