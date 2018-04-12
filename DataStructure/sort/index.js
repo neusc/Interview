@@ -98,6 +98,26 @@ function ArrayList () {
       gap = Math.floor(gap / 2)
     }
   }
+
+  // 快速排序基于递归实现
+  ArrayList.prototype.quickSort = function (arr) {
+    if (arr.length < 1) return arr
+    let pivotIndex = Math.floor(arr.length / 2)
+    let pivot = arr.splice(pivotIndex, 1)[0] // 选取中位数索引的值为基准值
+    let left = []
+    let right = []
+    // 小于基准值的放到基准值的左边
+    // 大于等于基准值的放到右边
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] < pivot) {
+        left.push(arr[i])
+      } else {
+        right.push(arr[i])
+      }
+    }
+    // 递归遍历左右两个数组，最终返回排完序合并和的数组
+    return this.quickSort(left).concat([pivot], this.quickSort(right))
+  }
 }
 
 let list = new ArrayList()
@@ -111,5 +131,4 @@ list.insert(10)
 list.insert(5)
 
 console.log(list)
-list.shellSort()
-console.log(list)
+console.log(list.quickSort(list.array))
