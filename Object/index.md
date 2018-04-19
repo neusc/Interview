@@ -77,7 +77,7 @@ object1.property1 = 77;
 console.log(object1.property1);
 // expected output: 42
 ```
-##### 7.Object.entries()方法返回对象中可枚举属性的格式为[key,value]的数组,顺序与for...in循环遍历结果一致
+##### 7.Object.entries()方法返回对象自身的可枚举属性的格式为[key,value]的数组,顺序与for...in循环遍历结果一致
 ```javascript
 const object1 = { foo: 'bar', baz: 42 };
 console.log(Object.entries(object1)[1]);
@@ -91,4 +91,4 @@ const object3 = { 100: 'a', 2: 'b', 7: 'c' };
 console.log(Object.entries(object3)[0]);
 // expected output: Array ["2", "b"]
 ```
-##### 8.Object.keys返回对象的可枚举属性的名称的数组，Object.values返回对象可枚举属性值的数组，顺序与for...in循环遍历结果一致
+##### 8.Object.keys返回对象自身的可枚举属性的名称的数组，Object.values返回对象自身的可枚举属性值的数组，顺序与for...in循环遍历结果一致
