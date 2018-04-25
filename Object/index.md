@@ -39,13 +39,39 @@ for (let prop in obj) {
     console.log(`obj.${prop} = ${obj[prop]}`)
   }
 }
+```
+
+##### 4.每个对象将继承objCustom属性，并且作为Array的每个对象将继承arrCustom属性，因为将这些属性添加到Object.prototype和Array.prototype。由于继承和原型链，对象iterable继承属性objCustom和arrCustom。<br/>
+##### for...in循环仅以原始插入顺序记录iterable 对象的可枚举属性。它不记录数组元素3, 5, 7 或hello，因为这些不是枚举属性。但是它记录了数组索引以及arrCustom和objCustom。<br/>
+##### for...of循环迭代并记录iterable作为可迭代对象定义的迭代值，这些是数组元素 3, 5, 7，而不是任何对象的属性。
+
+```javascript
+Object.prototype.objCustom = function() {}; 
+Array.prototype.arrCustom = function() {};
+
+let iterable = [3, 5, 7];
+iterable.foo = 'hello';
+
+for (let i in iterable) {
+  console.log(i); // logs 0, 1, 2, "foo", "arrCustom", "objCustom"
+}
+
+for (let i in iterable) {
+  if (iterable.hasOwnProperty(i)) {
+    console.log(i); // logs 0, 1, 2, "foo"
+  }
+}
+
+for (let i of iterable) {
+  console.log(i); // logs 3, 5, 7
+}
 
 // Output:
 // "obj.color = red"
 ```
 
-##### 4.可枚举属性是指那些内部 “可枚举” 标志设置为 true 的属性，对于通过直接的赋值和属性初始化的属性，该标识值默认为即为 true，对于通过 Object.defineProperty 等定义的属性，该标识值默认为 false。可枚举的属性可以通过 for...in 循环进行遍历（除非该属性名是一个 Symbol）
-##### 5.Object.create(obj)方法创建一个新对象，新对象的_proto_属性指向提供的对象obj
+##### 5.可枚举属性是指那些内部 “可枚举” 标志设置为 true 的属性，对于通过直接的赋值和属性初始化的属性，该标识值默认为即为 true，对于通过 Object.defineProperty 等定义的属性，该标识值默认为 false。可枚举的属性可以通过 for...in 循环进行遍历（除非该属性名是一个 Symbol）
+##### 6.Object.create(obj)方法创建一个新对象，新对象的_proto_属性指向提供的对象obj
 ```javascript
 const person = {
   isHuman: false,
@@ -62,7 +88,7 @@ me.isHuman = true; // inherited properties can be overwritten
 me.printIntroduction();
 // expected output: "My name is Matthew. Am I human? true"
 ```
-##### 6.Object.defineProperty()在对象上定义一个新属性或者修改已有属性
+##### 7.Object.defineProperty()在对象上定义一个新属性或者修改已有属性
 ```javascript
 const object1 = {};
 
@@ -77,7 +103,7 @@ object1.property1 = 77;
 console.log(object1.property1);
 // expected output: 42
 ```
-##### 7.Object.entries()方法返回对象自身的可枚举属性的格式为[key,value]的数组,顺序与for...in循环遍历结果一致
+##### 8.Object.entries()方法返回对象自身的可枚举属性的格式为[key,value]的数组,顺序与for...in循环遍历结果一致
 ```javascript
 const object1 = { foo: 'bar', baz: 42 };
 console.log(Object.entries(object1)[1]);
@@ -91,4 +117,4 @@ const object3 = { 100: 'a', 2: 'b', 7: 'c' };
 console.log(Object.entries(object3)[0]);
 // expected output: Array ["2", "b"]
 ```
-##### 8.Object.keys返回对象自身的可枚举属性的名称的数组，Object.values返回对象自身的可枚举属性值的数组，顺序与for...in循环遍历结果一致
+##### 9.Object.keys返回对象自身的可枚举属性的名称的数组，Object.values返回对象自身的可枚举属性值的数组，顺序与for...in循环遍历结果一致
