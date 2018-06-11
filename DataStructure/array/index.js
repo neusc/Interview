@@ -43,3 +43,25 @@ let newArr5 = arr.some((item, index, arr) => {
 )
 
 console.log(newArr5)
+
+// reduce
+// https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
+  [0, 1, 2, 3, 4].reduce(function (accumulator, currentValue, currentIndex, array) {
+  return accumulator + currentValue
+}) // 10
+
+  [0, 1, 2, 3, 4].reduce((prev, curr) => prev + curr) // 10
+
+let names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice']
+
+let countedNames = names.reduce(function (allNames, name) {
+  if (name in allNames) {
+    allNames[name]++
+  }
+  else {
+    allNames[name] = 1
+  }
+  return allNames
+}, {}) // 第二个参数提供初始值，如果没有提供则取数组的第一个值
+// countedNames is:
+// { 'Alice': 2, 'Bob': 1, 'Tiff': 1, 'Bruce': 1 }
