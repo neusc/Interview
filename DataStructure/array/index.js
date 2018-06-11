@@ -44,7 +44,7 @@ let newArr5 = arr.some((item, index, arr) => {
 
 console.log(newArr5)
 
-// reduce
+// reduce方法对累加器和数组中的每个元素（从左到右）应用一个函数，将其减少为单个值。
 // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
   [0, 1, 2, 3, 4].reduce(function (accumulator, currentValue, currentIndex, array) {
   return accumulator + currentValue
@@ -54,6 +54,7 @@ console.log(newArr5)
 
 let names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice']
 
+// 计算数组中重复元素的个数
 let countedNames = names.reduce(function (allNames, name) {
   if (name in allNames) {
     allNames[name]++
@@ -65,3 +66,13 @@ let countedNames = names.reduce(function (allNames, name) {
 }, {}) // 第二个参数提供初始值，如果没有提供则取数组的第一个值
 // countedNames is:
 // { 'Alice': 2, 'Bob': 1, 'Tiff': 1, 'Bruce': 1 }
+
+// 数组去重
+let arr = [1, 2, 1, 2, 3, 5, 4, 5, 3, 4, 4, 4, 4]
+let result = arr.sort().reduce((init, current) => {
+  if (init.length === 0 || init[init.length - 1] !== current) {
+    init.push(current)
+  }
+  return init
+}, [])
+console.log(result) //[1,2,3,4,5]
