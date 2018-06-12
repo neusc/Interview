@@ -44,6 +44,8 @@ for (let prop in obj) {
 ##### 4.每个对象将继承objCustom属性，并且作为Array的每个对象将继承arrCustom属性，因为将这些属性添加到Object.prototype和Array.prototype。由于继承和原型链，对象iterable继承属性objCustom和arrCustom。<br/>
 ##### for...in循环仅以原始插入顺序记录iterable 对象的可枚举属性。它不记录数组元素3, 5, 7 或hello，因为这些不是枚举属性。但是它记录了数组索引以及arrCustom和objCustom。<br/>
 ##### for...of循环迭代并记录iterable作为可迭代对象定义的迭代值，这些是数组元素 3, 5, 7，而不是任何对象的属性。
+##### 可迭代对象指对象实现了@iterator方法，也就是说改对象或其原型链中的某个对象必须具有带有Symbol.iterator键的属性。Array，String，Map，Set或TypedArray内置可迭代对象，但Object没有
+
 
 ```javascript
 Object.prototype.objCustom = function() {}; 
