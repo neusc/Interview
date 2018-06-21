@@ -29,15 +29,25 @@
     ]
 
     // 此处循环生成三个闭包共享同一个词法作用域
-    // 解决方法有两种：
-    // 1.使用let关键字将变量的作用域范围控制在块级作用域中
-    // 2.使用工厂函数保持各个闭包词法环境的相互独立性
+    // 解决方法有三种：
     for (var i = 0; i < helpText.length; i++) {
+      // 1.使用let关键字将变量的作用域范围控制在块级作用域中
       var item = helpText[i]
+
       // document.getElementById(item.id).onfocus = function () {
       //   showHelp(item.help)
       // } 结果不符合预期
+
+      // 2.使用工厂函数保持各个闭包词法环境的相互独立性
       document.getElementById(item.id).onfocus = makeHelpCallback(item.help)
+
+      // 3.使用匿名闭包马上把当前循环项的item与事件回调相关联起来
+      // (function () {
+      //   var item = helpText[i]
+      //   document.getElementById(item.id).onfocus = function () {
+      //     showHelp(item.help)
+      //   }
+      // })()
     }
   }
 
