@@ -3,50 +3,35 @@
  * Created by chuans
  * Date: 2018/3/5
  */
-let q = (function () {
-  let counter = 0
+
+// privateCounter和changeBy是私有函数和变量
+// 这两项都无法在这个匿名函数外部直接访问，必须通过匿名函数返回的三个公共函数访问。
+let makeCounter = function () {
+  let privateCounter = 0
+
+  function changeBy (val) {
+    privateCounter += val
+  }
+
   return {
-    add: function () {
-      return ++counter
+    increment: function () {
+      changeBy(1)
     },
-    decrease: function () {
-      return --counter
+    decrement: function () {
+      changeBy(-1)
     },
-    get: function () {
-      return counter
+    value: function () {
+      return privateCounter
     }
-  }
-})()
-
-console.log(q.add())
-console.log(q.decrease())
-console.log(q.get())
-
-class Counter {
-  constructor (counter = 0) {
-    this.counter = counter
-  }
-
-  add () {
-    return ++this.counter
-  }
-
-  decrease () {
-    return --this.counter
-  }
-
-  set (counter) {
-    this.counter = counter
-  }
-
-  get () {
-    return this.counter
   }
 }
 
-let p = new Counter(5)
-console.log(p.add())
-console.log(p.decrease())
-console.log(p.get())
-console.log(p.set(10))
-console.log(p.get())
+let Counter1 = makeCounter()
+let Counter2 = makeCounter()  // 每个闭包的词法环境都是相互独立的
+console.log(Counter1.value()) // logs 0
+Counter1.increment()
+Counter1.increment()
+console.log(Counter1.value()) // logs 2
+Counter1.decrement()
+console.log(Counter1.value()) // logs 1
+console.log(Counter2.value()) // logs 0
