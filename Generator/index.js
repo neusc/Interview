@@ -34,3 +34,44 @@ console.log(gen.next().value) // 11
 console.log(gen.next().value) // 12
 console.log(gen.next().value) // 13
 console.log(gen.next().value) // 20
+
+// 示例三
+function* iterArr(arr) {
+  if (Array.isArray(arr)) {
+    for (let i = 0; i < arr.length; i++) {
+      yield* iterArr(arr[i]);
+    }
+  } else {
+    yield arr;
+  }
+}
+
+let arr = ["a", ["b", "c"], ["d", "e"]];
+for (let i of iterArr(arr)) {
+  console.log(i);
+}
+
+// 示例四
+function* gen() {
+  yield* ["a", "b", "c"];
+}
+
+let g1 = gen().next(); // { value: "a", done: false }
+console.log(g1);
+
+// 示例五
+function* fibonaci() {
+  let fn1 = 0;
+  let fn2 = 1;
+  while (true) {
+    let current = fn1;
+    fn1 = fn2;
+    fn2 = current + fn1;
+    let reset = yield current;
+    if (reset) {
+      fn1 = 0;
+      fn2 = 1;
+    }
+  }
+}
+
