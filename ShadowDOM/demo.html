@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="./component.js"></script>
+  </head>
+  <body>
+    <div id="con">
+      我是基础文字
+      <span slot="main1">
+        占位1
+      </span>
+      <span slot="main2">
+        占位2
+      </span>
+      我还是基础文字
+    </div>
+    <template id="tpl">
+      我是模版
+      <slot name="main1"> </slot>
+      <slot name="main2"> </slot>
+      我还是模版
+    </template>
+    <flag-icon></flag-icon>
+  </body>
+  <script>
+    let host = document.querySelector("#con");
+    let root = host.attachShadow({ mode: "open" });
+
+    let con = document.getElementById("tpl").content.cloneNode(true);
+
+    root.appendChild(con);
+  </script>
+</html>
